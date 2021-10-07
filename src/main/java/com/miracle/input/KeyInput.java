@@ -21,4 +21,8 @@ public class KeyInput implements KeyListener {
         return keys[keyCode];
     }
 
+    public static void disableKey(int keyCode) {
+        keys[keyCode] = false;
+    }
+
 }

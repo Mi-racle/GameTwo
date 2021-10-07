@@ -1,8 +1,10 @@
 package com.miracle.graphics;
 
+import com.jogamp.newt.event.KeyEvent;
 import com.jogamp.opengl.GL2;
 import com.jogamp.opengl.GLAutoDrawable;
 import com.jogamp.opengl.GLEventListener;
+import com.miracle.input.KeyInput;
 import com.miracle.loader.ImageResource;
 import com.miracle.world.Picture;
 import com.miracle.world.World;
@@ -54,6 +56,7 @@ public class EventListener implements GLEventListener {
         long currentTime = System.nanoTime();
         if (currentId <= MAX_PICTURE) {
             if (currentTime - lastCheckTime >= REFLECTION_TIME) {
+                KeyInput.disableKey(KeyEvent.VK_DOWN);
                 int curY = (currentId - 1) / 3;
                 currentPicture =
                         new Picture(
