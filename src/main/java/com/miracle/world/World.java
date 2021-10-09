@@ -1,7 +1,5 @@
 package com.miracle.world;
 
-import com.miracle.graphics.EventListener;
-
 import java.util.ArrayList;
 
 public class World {

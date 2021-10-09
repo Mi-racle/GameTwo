@@ -13,9 +13,6 @@ public class Renderer {
     public static int screenWidth = 1024;
     public static int screenHeight = 768;
 
-    public static double unitsWide = 1024;
-    public static double unitsHigh = 768;
-
     public static void init() {
         GLProfile.initSingleton();
         profile = GLProfile.get(GLProfile.GL2);
