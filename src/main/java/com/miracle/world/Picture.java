@@ -12,19 +12,22 @@ public class Picture extends GameObject {
 
     private int identification = 0;
 
-    public Picture(ImageResource image, double x, double y, int identification) {
+    private int order = 0;
+
+    public Picture(ImageResource image, double x, double y, int identification, int order, double ratio) {
         this.image = image;
         this.x = x;
         this.y = y;
         this.identification = identification;
-        this.width = image.getWidth();
-        this.height = image.getHeight();
+        this.order = order;
+        this.width = image.getWidth() * ratio;
+        this.height = image.getHeight() * ratio;
     }
 
     @Override
     public void update() {
         if (KeyInput.getKey(KeyEvent.VK_DOWN)) {
-            if (this.equals(EventListener.currentPicture)) {
+            if (this.equals(EventListener.getGivenPicture())) {
                 image = new ImageResource("../reflection/" + identification + "A.bmp");
             }
         }
@@ -56,5 +59,9 @@ public class Picture extends GameObject {
         }
 
         return false;
+    }
+
+    public int getOrder() {
+        return order;
     }
 }

@@ -9,6 +9,8 @@ import com.miracle.loader.ImageResource;
 import com.miracle.world.Picture;
 import com.miracle.world.World;
 
+import java.util.Random;
+
 public class EventListener implements GLEventListener {
 
     public static double ratioWidth = 1;
@@ -16,12 +18,15 @@ public class EventListener implements GLEventListener {
 
     public static GL2 gl = null;
 
-    public static Picture currentPicture = null;
-    private int currentId = 0;
+    private static Picture givenPicture = null;
+    private int pictureCount = 0;
 
     private long lastCheckTime = 0;
 
-    private static final int MAX_PICTURE = 9;
+    private static final int PICTURE_WIDTH = 56 * 3;
+    private static final int PICTURE_HEIGHT = 76 * 3;
+    private static final int MAX_PICTURE_COUNT = 3 * 5;
+    private static final int PICTURE_TYPES = 9;
     private static final long REFLECTION_TIME = 500000000; // 500ms
 
     @Override
@@ -34,10 +39,11 @@ public class EventListener implements GLEventListener {
         gl.glClearColor(1, 1, 1, 1);
         gl.glEnable(GL2.GL_TEXTURE_2D);
 
-        currentPicture =
-                new Picture(new ImageResource("../reflection/" + currentId + ".bmp"), 0, 0, currentId);
-        currentId ++;
-        World.addPicture(currentPicture);
+        int givenId = (int) (Math.random() * 9);
+        givenPicture =
+                new Picture(new ImageResource("../reflection/" + givenId + ".bmp"), 0, 0, givenId, -1, 3);
+
+        World.addPicture(givenPicture);
         lastCheckTime = System.nanoTime();
     }
 
@@ -54,20 +60,23 @@ public class EventListener implements GLEventListener {
         gl.glClear(GL2.GL_COLOR_BUFFER_BIT);
 
         long currentTime = System.nanoTime();
-        if (currentId <= MAX_PICTURE) {
+        if (pictureCount < MAX_PICTURE_COUNT) {
             if (currentTime - lastCheckTime >= REFLECTION_TIME) {
                 KeyInput.disableKey(KeyEvent.VK_DOWN);
-                int curY = (currentId - 1) / 3;
-                currentPicture =
-                        new Picture(
-                                new ImageResource(
-                                        "../reflection/" + currentId + ".bmp"),
-                                56 + 56 * ((currentId - 1) % 3),
-                                76 * curY,
-                                currentId
-                        );
-                currentId++;
+                int curX = pictureCount % 5;
+                int curY = pictureCount / 5;
+                int currentId = (int) (Math.random() * PICTURE_TYPES);
+                Picture currentPicture = new Picture(
+                        new ImageResource(
+                                "../reflection/" + currentId + ".bmp"),
+                        PICTURE_WIDTH + PICTURE_WIDTH * curX,
+                        PICTURE_HEIGHT * curY,
+                        currentId,
+                        pictureCount,
+                        3
+                );
                 World.addPicture(currentPicture);
+                pictureCount ++;
                 lastCheckTime = System.nanoTime();
             }
         }
@@ -81,5 +90,9 @@ public class EventListener implements GLEventListener {
         gl.glLoadIdentity();
         gl.glOrtho(0, Renderer.getScreenWidth(), Renderer.getScreenHeight(), 0, -1, 1);
         gl.glMatrixMode(GL2.GL_MODELVIEW);
+    }
+
+    public static Picture getGivenPicture() {
+        return givenPicture;
     }
 }

@@ -1,11 +1,13 @@
 package com.miracle.world;
 
+import com.miracle.graphics.EventListener;
+
 import java.util.ArrayList;
 
 public class World {
 
-    private static ArrayList<GameObject> gameObjects = new ArrayList<>();
-    private static ArrayList<Picture> pictures = new ArrayList<>();
+    private static final ArrayList<GameObject> gameObjects = new ArrayList<>();
+    private static final ArrayList<Picture> pictures = new ArrayList<>();
 
     public static void update() {
         for (GameObject gameObject : gameObjects) {
@@ -13,7 +15,9 @@ public class World {
         }
 
         for (Picture picture : pictures) {
-            picture.update();
+            if (picture.getOrder() != -1) {
+                picture.update();
+            }
         }
     }
 
@@ -29,10 +33,6 @@ public class World {
 
     public static void addObject(GameObject gameObject) {
         gameObjects.add(gameObject);
-    }
-
-    public static void removeObject(GameObject gameObject) {
-        gameObjects.remove(gameObject);
     }
 
     public static void addPicture(Picture picture) {
