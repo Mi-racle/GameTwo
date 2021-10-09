@@ -19,6 +19,7 @@ public class EventListener implements GLEventListener {
     public static GL2 gl = null;
 
     private static Picture givenPicture = null;
+    private static int givenId = 0;
     private int pictureCount = 0;
 
     private long lastCheckTime = 0;
@@ -39,7 +40,7 @@ public class EventListener implements GLEventListener {
         gl.glClearColor(1, 1, 1, 1);
         gl.glEnable(GL2.GL_TEXTURE_2D);
 
-        int givenId = (int) (Math.random() * 9);
+        givenId = (int) (Math.random() * 9);
         givenPicture =
                 new Picture(new ImageResource("../reflection/" + givenId + ".bmp"), 0, 0, givenId, -1, 3);
 
@@ -65,7 +66,10 @@ public class EventListener implements GLEventListener {
                 KeyInput.disableKey(KeyEvent.VK_DOWN);
                 int curX = pictureCount % 5;
                 int curY = pictureCount / 5;
-                int currentId = (int) (Math.random() * PICTURE_TYPES);
+                int currentId = (int) (Math.random() * (PICTURE_TYPES + 2));
+                if (currentId > PICTURE_TYPES) {
+                    currentId = givenId;
+                }
                 Picture currentPicture = new Picture(
                         new ImageResource(
                                 "../reflection/" + currentId + ".bmp"),
